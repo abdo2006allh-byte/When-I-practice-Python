@@ -1,0 +1,115 @@
+# Library Management System - corrected version
+print("Welcome to the Library Management System")
+
+books = []            # list of book titles (str)
+availability = []     # list of bools: True = available, False = borrowed
+borrowed_count = 0    # int - number of borrowed books
+
+while True:
+    print("\n=========== Main Menu ===========")
+    print("1 - Add a new book")
+    print("2 - Show all books")
+    print("3 - Borrow a book")
+    print("4 - Return a book")
+    print("5 - Search for a book")
+    print("6 - Library statistics")
+    print("7 - Exit")
+    choice = input("Enter the operation number: ").strip()
+
+    # 1) Add a new book
+    if choice == "1":
+        title = input("Enter the book name: ").strip()
+        if title == "" or title.isspace():
+            print("Title cannot be empty. Book not added.")
+        else:
+            books.append(title)
+            availability.append(True)
+            print(f"The book has been added: {title}")
+
+    # 2) Show all books
+    elif choice == "2":
+        if len(books) == 0:
+            print("No books available.")
+        else:
+            print("\nList of books:")
+            for i in range(len(books)):
+                status = "Available ✅" if availability[i] else "Borrowed ❌"
+                print(f"{i+1}. {books[i]} - {status}")
+
+    # 3) Borrow a book
+    elif choice == "3":
+        if len(books) == 0:
+            print("There are no books to borrow.")
+        else:
+            book_num = input("Enter the number of the book to borrow: ").strip()
+            if not book_num.isdigit():
+                print("Invalid number. Please enter a numeric book number.")
+            else:
+                idx = int(book_num) - 1          # convert 1-based input to 0-based index
+                if 0 <= idx < len(books):
+                    if availability[idx]:
+                        availability[idx] = False
+                        borrowed_count += 1
+                        print(f"The book has been borrowed: {books[idx]}")
+                    else:
+                        print("This book is already borrowed.")
+                else:
+                    print("Book number is not valid.")
+
+    # 4) Return a book
+    elif choice == "4":
+        if borrowed_count == 0:
+            print("There are no borrowed books right now.")
+        else:
+            book_num = input("Enter the number of the book to return: ").strip()
+            if not book_num.isdigit():
+                print("Invalid number. Please enter a numeric book number.")
+            else:
+                idx = int(book_num) - 1
+                if 0 <= idx < len(books):
+                    if not availability[idx]:
+                        availability[idx] = True
+                        borrowed_count -= 1
+                        print(f"The book has been returned: {books[idx]}")
+                    else:
+                        print("This book was not borrowed.")
+                else:
+                    print("Book number is not valid.")
+
+    # 5) Search for a book
+    elif choice == "5":
+        keyword = input("Enter keyword to search: ").strip()
+        found = False
+        for i in range(len(books)):
+            if keyword.lower() in books[i].lower():
+                status = "Available ✅" if availability[i] else "Borrowed ❌"
+                print(f"Found: {books[i]} - {status}")
+                found = True
+        if not found:
+            print("No matching book found.")
+
+    # 6) Statistics
+    elif choice == "6":
+        total_books = len(books)
+        available_books = total_books - borrowed_count
+        print("\nLibrary Statistics:")
+        print("Total books:", total_books)
+        print("Borrowed:", borrowed_count)
+        print("Available:", available_books)
+        if total_books > 0:
+            percentage = (available_books / total_books) * 100
+            print(f"Availability percentage: {percentage:.2f}%")
+            # مثال على استخدام باقي القسمة (modulo)
+            parity = total_books % 2
+            if parity == 0:
+                print("Total number of books is even (parity = 0).")
+            else:
+                print("Total number of books is odd (parity = 1).")
+
+    # 7) Exit
+    elif choice == "7":
+        print("Thanks for using the Library Management System. Goodbye!")
+        break
+
+    else:
+        print("Not valid. Try again.")
