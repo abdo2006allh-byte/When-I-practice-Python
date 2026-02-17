@@ -1,0 +1,66 @@
+class Animal:
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+        
+    def make_sound(self):
+        return "Some generic animal sound"
+        
+    def get_info(self):
+        return f"{self.name} is a {self.species}"
+
+class Dog(Animal):
+    def __init__(self, name, breed):
+        super().__init__(name, "Dog")
+        self.breed = breed
+        
+    def make_sound(self):
+        return "Woof! Woof!"
+        
+    def get_info(self):
+        base_info = super().get_info()
+        return f"{base_info} of breed {self.breed}"
+
+class Cat(Animal):
+    def __init__(self, name, color):
+        super().__init__(name, "Cat")
+        self.color = color
+        
+    def make_sound(self):
+        return "Meow! Meow!"
+        
+    def get_info(self):
+        return f"{super().get_info()} with {self.color} color"
+
+class Zoo:
+    def __init__(self, name):
+        self.name = name
+        self.animals = []
+    
+    def add_animal(self, animal):
+        self.animals.append(animal)
+        print(f"Added {animal.name} to {self.name}")
+    
+    def show_animals(self):
+        print(f"\nAnimals in {self.name}:")
+        for animal in self.animals:
+            print(f"- {animal.get_info()}")
+    
+    def make_all_sounds(self):
+        print(f"\nSounds in {self.name}:")
+        for animal in self.animals:
+            sound = animal.make_sound()
+            print(f"{animal.name}: {sound}")
+
+if __name__ == "__main__":
+    my_zoo = Zoo("Awesome Zoo")
+    dog1 = Dog("Buddy", "Golden Retriever")
+    dog2 = Dog("Max", "German Shepherd")
+    cat1 = Cat("Whiskers", "white")
+
+    my_zoo.add_animal(dog1)
+    my_zoo.add_animal(dog2)
+    my_zoo.add_animal(cat1)
+
+    my_zoo.show_animals()
+    my_zoo.make_all_sounds()
